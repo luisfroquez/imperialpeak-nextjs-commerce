@@ -1,10 +1,34 @@
+/** @type {import('prettier').Config} */
 module.exports = {
+  endOfLine: 'lf',
+  semi: false,
   singleQuote: true,
-  arrowParens: 'always',
-  trailingComma: 'none',
-  printWidth: 100,
   tabWidth: 2,
-  // pnpm doesn't support plugin autoloading
-  // https://github.com/tailwindlabs/prettier-plugin-tailwindcss#installation
-  plugins: [require('prettier-plugin-tailwindcss')]
-};
+  printWidth: 100,
+  trailingComma: 'es5',
+  importOrder: [
+    '^(react/(.*)$)|^(react$)',
+    '^(next/(.*)$)|^(next$)',
+    '<THIRD_PARTY_MODULES>',
+    '',
+    '^types$',
+    '^@/lib/(.*)$',
+    '^@/hooks/(.*)$',
+    '^@/components/(.*)$',
+    '^@/styles/(.*)$',
+    '^@/app/(.*)$',
+    '',
+    '^[./]',
+  ],
+  importOrderSeparation: false,
+  importOrderSortSpecifiers: true,
+  importOrderBuiltinModulesToTop: true,
+  importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
+  importOrderMergeDuplicateImports: true,
+  importOrderCombineTypeAndValueImports: true,
+  plugins: [
+    '@ianvs/prettier-plugin-sort-imports',
+    'prettier-plugin-tailwindcss',
+    'prettier-plugin-organize-imports',
+  ],
+}
