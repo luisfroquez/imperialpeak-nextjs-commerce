@@ -7,7 +7,7 @@ type Route = {
   lastModified: string
 }
 
-const baseUrl = NEXT_PUBLIC_SITE_URL ? `https://${NEXT_PUBLIC_SITE_URL}` : 'http://localhost:3000'
+const baseUrl = NEXT_PUBLIC_SITE_URL ? `${NEXT_PUBLIC_SITE_URL}` : 'http://localhost:3000'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const routesMap = [''].map((route) => ({
