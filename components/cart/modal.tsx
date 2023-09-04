@@ -1,41 +1,41 @@
-'use client';
+'use client'
 
-import { Dialog, Transition } from '@headlessui/react';
-import { ShoppingCartIcon } from '@heroicons/react/24/outline';
-import Price from 'components/price';
-import { DEFAULT_OPTION } from 'lib/constants';
-import type { Cart } from 'lib/shopify/types';
-import { createUrl } from 'lib/utils';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Fragment, useEffect, useRef, useState } from 'react';
-import CloseCart from './close-cart';
-import DeleteItemButton from './delete-item-button';
-import EditItemQuantityButton from './edit-item-quantity-button';
-import OpenCart from './open-cart';
+import { Dialog, Transition } from '@headlessui/react'
+import { ShoppingCartIcon } from '@heroicons/react/24/outline'
+import Price from 'components/price'
+import { DEFAULT_OPTION } from 'lib/constants'
+import type { Cart } from 'lib/shopify/types'
+import { createUrl } from 'lib/utils'
+import Image from 'next/image'
+import Link from 'next/link'
+import { Fragment, useEffect, useRef, useState } from 'react'
+import CloseCart from './close-cart'
+import DeleteItemButton from './delete-item-button'
+import EditItemQuantityButton from './edit-item-quantity-button'
+import OpenCart from './open-cart'
 
 type MerchandiseSearchParams = {
-  [key: string]: string;
-};
+  [key: string]: string
+}
 
 export default function CartModal({ cart }: { cart: Cart | undefined }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const quantityRef = useRef(cart?.totalQuantity);
-  const openCart = () => setIsOpen(true);
-  const closeCart = () => setIsOpen(false);
+  const [isOpen, setIsOpen] = useState(false)
+  const quantityRef = useRef(cart?.totalQuantity)
+  const openCart = () => setIsOpen(true)
+  const closeCart = () => setIsOpen(false)
 
   useEffect(() => {
     // Open cart modal when quantity changes.
     if (cart?.totalQuantity !== quantityRef.current) {
       // But only if it's not already open (quantity also changes when editing items in cart).
       if (!isOpen) {
-        setIsOpen(true);
+        setIsOpen(true)
       }
 
       // Always update the quantity reference
-      quantityRef.current = cart?.totalQuantity;
+      quantityRef.current = cart?.totalQuantity
     }
-  }, [isOpen, cart?.totalQuantity, quantityRef]);
+  }, [isOpen, cart?.totalQuantity, quantityRef])
 
   return (
     <>
@@ -66,7 +66,7 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
           >
             <Dialog.Panel className="fixed bottom-0 right-0 top-0 flex h-full w-full flex-col border-l border-neutral-200 bg-white/80 p-6 text-black backdrop-blur-xl dark:border-neutral-700 dark:bg-black/80 dark:text-white md:w-[390px]">
               <div className="flex items-center justify-between">
-                <p className="text-lg font-semibold">My Cart</p>
+                <p className="text-lg font-semibold">Carrito</p>
 
                 <button aria-label="Close cart" onClick={closeCart}>
                   <CloseCart />
@@ -76,24 +76,24 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
               {!cart || cart.lines.length === 0 ? (
                 <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
                   <ShoppingCartIcon className="h-16" />
-                  <p className="mt-6 text-center text-2xl font-bold">Your cart is empty.</p>
+                  <p className="mt-6 text-center text-2xl font-bold">Tu carrito está vacío.</p>
                 </div>
               ) : (
                 <div className="flex h-full flex-col justify-between overflow-hidden p-1">
                   <ul className="flex-grow overflow-auto py-4">
                     {cart.lines.map((item, i) => {
-                      const merchandiseSearchParams = {} as MerchandiseSearchParams;
+                      const merchandiseSearchParams = {} as MerchandiseSearchParams
 
                       item.merchandise.selectedOptions.forEach(({ name, value }) => {
                         if (value !== DEFAULT_OPTION) {
-                          merchandiseSearchParams[name.toLowerCase()] = value;
+                          merchandiseSearchParams[name.toLowerCase()] = value
                         }
-                      });
+                      })
 
                       const merchandiseUrl = createUrl(
                         `/product/${item.merchandise.product.handle}`,
                         new URLSearchParams(merchandiseSearchParams)
-                      );
+                      )
 
                       return (
                         <li
@@ -149,7 +149,7 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                             </div>
                           </div>
                         </li>
-                      );
+                      )
                     })}
                   </ul>
                   <div className="py-4 text-sm text-neutral-500 dark:text-neutral-400">
@@ -187,5 +187,5 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
         </Dialog>
       </Transition>
     </>
-  );
+  )
 }
